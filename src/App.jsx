@@ -63,7 +63,7 @@ const hotels = [
   }
 ];
 
-export default function MapDemo() {
+export default function App() {
   const [activeTab, setActiveTab] = useState("all"); // all | train | hotel
   const [popup, setPopup] = useState(null);
   const [scale, setScale] = useState(1);
