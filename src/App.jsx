@@ -8,29 +8,71 @@ const trains = [
     name: "Đoàn tàu A",
     color: "#ef4444",
     path: [
-      { id: "hn", x: 420, y: 300, title: "Hà Nội", img: "https://placehold.co/200x120", desc: "Thủ đô Việt Nam" },
-      { id: "bj", x: 520, y: 140, title: "Bắc Kinh", img: "https://placehold.co/200x120", desc: "Thủ đô Trung Quốc" },
-      { id: "vt", x: 360, y: 380, title: "Viêng Chăn", img: "https://placehold.co/200x120", desc: "Thủ đô Lào" }
+      {
+        id: "hn",
+        x: 420,
+        y: 300,
+        title: "Hà Nội",
+        img: "https://placehold.co/200x120",
+        desc: "Thủ đô Việt Nam"
+      },
+      {
+        id: "bj",
+        x: 520,
+        y: 140,
+        title: "Bắc Kinh",
+        img: "https://placehold.co/200x120",
+        desc: "Thủ đô Trung Quốc"
+      },
+      {
+        id: "vt",
+        x: 360,
+        y: 380,
+        title: "Viêng Chăn",
+        img: "https://placehold.co/200x120",
+        desc: "Thủ đô Lào"
+      }
     ]
   }
 ];
 
 const hotels = [
-  { id: "hn-h", x: 430, y: 300, title: "Hotel Hà Nội", img: "https://placehold.co/240x140", desc: "4★ – Trung tâm Hà Nội" },
-  { id: "qn-h", x: 480, y: 260, title: "Hotel Quảng Ninh", img: "https://placehold.co/240x140", desc: "5★ – Gần vịnh Hạ Long" },
-  { id: "ha-h", x: 450, y: 360, title: "Hotel Hội An", img: "https://placehold.co/240x140", desc: "4★ – Phố cổ" }
+  {
+    id: "hn-h",
+    x: 430,
+    y: 300,
+    title: "Hotel Hà Nội",
+    img: "https://placehold.co/240x140",
+    desc: "4★ – Trung tâm Hà Nội"
+  },
+  {
+    id: "qn-h",
+    x: 480,
+    y: 260,
+    title: "Hotel Quảng Ninh",
+    img: "https://placehold.co/240x140",
+    desc: "5★ – Gần vịnh Hạ Long"
+  },
+  {
+    id: "ha-h",
+    x: 450,
+    y: 360,
+    title: "Hotel Hội An",
+    img: "https://placehold.co/240x140",
+    desc: "4★ – Phố cổ"
+  }
 ];
 
 export default function MapDemo() {
   const [activeTab, setActiveTab] = useState("all"); // all | train | hotel
-  const [popup, setPopup] = useState(null); // { x, y, title, img, desc }
+  const [popup, setPopup] = useState(null);
   const [scale, setScale] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [hoverCountry, setHoverCountry] = useState(null); // 'vn' | 'cn' | 'lao' | null({ x: 0, y: 0 });
+  const [hoverCountry, setHoverCountry] = useState(null); // vn | cn | lao | null
 
   const clampScale = v => Math.min(3, Math.max(0.6, v));
 
-  // Zoom centered on mouse position
+  // Zoom centered on mouse
   const handleWheel = e => {
     e.preventDefault();
     const rect = e.currentTarget.getBoundingClientRect();
@@ -49,7 +91,7 @@ export default function MapDemo() {
   };
 
   const fitToPoints = points => {
-    if (!points || points.length === 0) return;
+    if (!points?.length) return;
 
     const padding = 60;
     const xs = points.map(p => p.x);
@@ -97,18 +139,28 @@ export default function MapDemo() {
   ];
 
   const visiblePoints =
-    activeTab === "all" ? allPoints : activeTab === "train" ? trains[0].path : hotels;
+    activeTab === "all"
+      ? allPoints
+      : activeTab === "train"
+      ? trains[0].path
+      : hotels;
 
   return (
     <div className="w-full h-screen bg-gray-100 p-4">
-      {/* === Tabs === */}
+      {/* Tabs */}
       <div className="flex gap-2 mb-3">
-        <button onClick={() => resetView("all")} className="px-3 py-1 rounded-xl bg-white shadow text-sm">🌍 All</button>
-        <button onClick={() => resetView("train")} className="px-3 py-1 rounded-xl bg-white shadow text-sm">🚆 Tàu</button>
-        <button onClick={() => resetView("hotel")} className="px-3 py-1 rounded-xl bg-white shadow text-sm">🏨 Khách sạn</button>
+        <button onClick={() => resetView("all")} className="px-3 py-1 rounded-xl bg-white shadow text-sm">
+          🌍 All
+        </button>
+        <button onClick={() => resetView("train")} className="px-3 py-1 rounded-xl bg-white shadow text-sm">
+          🚆 Tàu
+        </button>
+        <button onClick={() => resetView("hotel")} className="px-3 py-1 rounded-xl bg-white shadow text-sm">
+          🏨 Khách sạn
+        </button>
       </div>
 
-      {/* === Map container === */}
+      {/* Map */}
       <div
         className="relative overflow-hidden bg-white rounded-2xl shadow"
         style={{ height: 520 }}
@@ -119,62 +171,60 @@ export default function MapDemo() {
           transition={{ type: "spring", damping: 30, stiffness: 120, mass: 0.6 }}
           className="origin-top-left w-[900px] h-[520px]"
         >
-          {/* === Vector Map === */}
+          {/* Vector map */}
           <svg width="900" height="520" className="absolute inset-0">
             <rect width="900" height="520" fill="#ecfeff" />
 
-            {/* === China === */}
+            {/* China */}
             <path
-           import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);   d="M400 40 L700 40 L820 200 L650 260 L420 180 Z"
-              fill={hoverCountry === 'cn' ? '#bfdbfe' : '#e0f2fe'}
-              stroke={hoverCountry === 'cn' ? '#2563eb' : '#93c5fd'}
-              strokeWidth={hoverCountry === 'cn' ? 2 : 1}
+              d="M400 40 L700 40 L820 200 L650 260 L420 180 Z"
+              fill={hoverCountry === "cn" ? "#bfdbfe" : "#e0f2fe"}
+              stroke={hoverCountry === "cn" ? "#2563eb" : "#93c5fd"}
+              strokeWidth={hoverCountry === "cn" ? 2 : 1}
               className="cursor-pointer transition-all"
-              onMouseEnter={() => setHoverCountry('cn')}
+              onMouseEnter={() => setHoverCountry("cn")}
               onMouseLeave={() => setHoverCountry(null)}
             />
-            {hoverCountry === 'cn' && (
-              <text x="560" y="160" textAnchor="middle" fontSize="28" fill="#1e40af" opacity="0.25">TRUNG QUỐC</text>
+            {hoverCountry === "cn" && (
+              <text x="560" y="160" textAnchor="middle" fontSize="28" fill="#1e40af" opacity="0.25">
+                TRUNG QUỐC
+              </text>
             )}
 
-            {/* === Vietnam === */}
+            {/* Vietnam */}
             <path
               d="M420 200 L480 240 L460 360 L430 420 L390 380 L400 300 Z"
-              fill={hoverCountry === 'vn' ? '#bbf7d0' : '#dcfce7'}
-              stroke={hoverCountry === 'vn' ? '#15803d' : '#86efac'}
-              strokeWidth={hoverCountry === 'vn' ? 2 : 1}
+              fill={hoverCountry === "vn" ? "#bbf7d0" : "#dcfce7"}
+              stroke={hoverCountry === "vn" ? "#15803d" : "#86efac"}
+              strokeWidth={hoverCountry === "vn" ? 2 : 1}
               className="cursor-pointer transition-all"
-              onMouseEnter={() => setHoverCountry('vn')}
+              onMouseEnter={() => setHoverCountry("vn")}
               onMouseLeave={() => setHoverCountry(null)}
             />
-            {hoverCountry === 'vn' && (
-              <text x="430" y="330" textAnchor="middle" fontSize="26" fill="#14532d" opacity="0.25">VIỆT NAM</text>
+            {hoverCountry === "vn" && (
+              <text x="430" y="330" textAnchor="middle" fontSize="26" fill="#14532d" opacity="0.25">
+                VIỆT NAM
+              </text>
             )}
 
-            {/* === Laos === */}
+            {/* Laos */}
             <path
               d="M300 240 L420 200 L400 300 L360 420 L280 360 Z"
-              fill={hoverCountry === 'lao' ? '#fde68a' : '#fef3c7'}
-              stroke={hoverCountry === 'lao' ? '#ca8a04' : '#fde68a'}
-              strokeWidth={hoverCountry === 'lao' ? 2 : 1}
+              fill={hoverCountry === "lao" ? "#fde68a" : "#fef3c7"}
+              stroke={hoverCountry === "lao" ? "#ca8a04" : "#fde68a"}
+              strokeWidth={hoverCountry === "lao" ? 2 : 1}
               className="cursor-pointer transition-all"
-              onMouseEnter={() => setHoverCountry('lao')}
+              onMouseEnter={() => setHoverCountry("lao")}
               onMouseLeave={() => setHoverCountry(null)}
             />
-            {hoverCountry === 'lao' && (
-              <text x="340" y="330" textAnchor="middle" fontSize="24" fill="#92400e" opacity="0.25">LÀO</text>
+            {hoverCountry === "lao" && (
+              <text x="340" y="330" textAnchor="middle" fontSize="24" fill="#92400e" opacity="0.25">
+                LÀO
+              </text>
             )}
           </svg>
 
-          {/* === Train route === */}
+          {/* Train route */}
           {activeTab === "train" && (
             <svg width="900" height="520" className="absolute inset-0">
               <motion.path
@@ -188,7 +238,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             </svg>
           )}
 
-          {/* === Points === */}
+          {/* Points */}
           {visiblePoints.map(p => (
             <div
               key={p.id}
@@ -202,7 +252,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           ))}
         </motion.div>
 
-        {/* === Popup (screen-space, NOT scaled) === */}
+        {/* Popup (screen-space) */}
         {popup && (() => {
           const POPUP_W = 260;
           const POPUP_H = 220;
@@ -219,7 +269,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
           return (
             <div
-              className="absolute w-64 bg-white rounded-xl shadow p-3 pointer-events-auto"
+              className="absolute w-64 bg-white rounded-xl shadow p-3"
               style={{ left: Math.max(MARGIN, left), top: Math.max(MARGIN, top) }}
             >
               <img src={popup.img} alt="" className="rounded-lg mb-2" />
